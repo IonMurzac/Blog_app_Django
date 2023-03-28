@@ -1,0 +1,17 @@
+{% extends  'Blog_app/main.html' %}
+
+{% block content %}
+
+<div class="header-bar">
+    <a href="{% url 'posts' %}">&#8592; Back</a>
+</div>
+
+<div class="card-body">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="button" type="submit" value="Post">
+    </form>
+</div>
+
+{% endblock content %}

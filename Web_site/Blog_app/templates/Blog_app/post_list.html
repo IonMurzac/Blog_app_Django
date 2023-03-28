@@ -1,0 +1,96 @@
+{% extends  'Blog_app/main.html' %}
+
+{% block content %}
+
+<div class="header-bar">
+    <div>
+        <h1>Hi {{request.user|title}}</h1>
+        <h3 style="margin: 0;">In this blog we have <i>{{count}}</i> post{{ count|pluralize:'s' }}</h3>
+    </div>
+
+    <a href="{% url 'contact' %}">Contact</a>
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+</div>
+
+<div id="search-add-wrapper">
+    <form action="" method="GET" style="margin-top: 20px; display: flex;">
+        <input type="text" name="search-area" value="{{search_input}}">
+        <input class="button" type="submit" value="Search">
+    </form>
+    <a id="add-link" href="{% url 'post-create' %}">&#x2b; Create a Post</a>
+</div>
+
+<div class="post-items-wrapper">
+    {% for post in posts %}
+        <div class="post-wrapper">
+            {% if post.picture %}
+                <table style="width:505px">
+                    <tr>
+                        <th style="width:345px">
+                            <div class="post-title">
+                                <div class="post-picture-icon"></div>
+                                <i><a href="{% url 'post-update' post.id %}">{{post}}</a></i>
+                            </div>
+                        </th>
+                        <th style="width:160px" align="right">
+                            <a class="delete-link" href="{% url 'post-delete' post.id %}">&#215;</a>
+                        </th>
+                    </tr>               
+                    <tr>
+                        <td colspan = "2">
+                            <div class="post-description">{{post.description}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan = "2" align="center">
+                            <img src="{{post.picture.url}}" width="505", height="auto">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:255px" align="left">
+                            <div class="post-author">Author: {{post.user}}</div>
+                        </td>
+                        <td style="width:250px" align="right">
+                            <div class="post-create">{{post.create}}</div>
+                        </td>
+                    </tr>
+                </table>
+            {% else %}
+            <table style="width:505px">
+                <tr>
+                    <th style="width:345px">
+                        <div class="post-title" >
+                            <div class="post-picture-icon2"></div>
+                            <i><a href="{% url 'post-update' post.id %}">{{post}}</a></i>
+                        </div>
+                    </th>
+                    
+                    <th align="right" >
+                        <a class="delete-link" href="{% url 'post-delete' post.id %}">&#215;</a>
+                    </th>
+                </tr>               
+                <tr>
+                    <td colspan = "2">
+                        <div class="post-description">{{post.description}}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:255px">
+                        <div class="post-author">Author: {{post.user}}</div>
+                    </td>
+                    <td style="width:250px" align="right">
+                        <div class="post-create">{{post.create}}</div>
+                    </td>
+                </tr>
+            </table>
+            {% endif %}
+        </div>
+    {% empty %}
+        <h3>No posts in list</h3>
+    {% endfor %}
+</div>
+{% endblock content %}
